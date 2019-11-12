@@ -1,8 +1,8 @@
+const path = require("path")
 const express = require("express")
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const mongoURI = require("./config/keys").mongoURI;
-const path = require("path")
 const itemsRouter = require("./routes/api/items")
 
 const app = express();
