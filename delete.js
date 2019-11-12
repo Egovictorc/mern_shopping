@@ -1,4 +1,4 @@
+const path = require("path")
 
-const now = Date.now();
-
-console.log(`now ::::: `, now)
+const mod = path.resolve(__dirname, "build", "index.html")
+console.log(`modified path  `, mod)
