@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const express = require("express")
 const router = express.Router();
- 
+ const auth = require("../../middleware/auth")
 const item = require("../../models/Item")
 
 // @route GET api/items
@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
 // @route GET api/items
 // @desc create a post
 // @access GET api/items
-router.post("/", (req, res) => {
+router.post("/", auth, (req, res) => {
     const newItems = new item({
         name: req.body.name
     });
@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
 })
 
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", auth, (req, res) => {
     const id = req.params.id;
     // item.findByIdAndDelete(id)
     item.findById(id)

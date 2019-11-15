@@ -1,37 +1,42 @@
 const path = require("path")
 const express = require("express")
 const mongoose = require("mongoose")
-const bodyParser = require("body-parser")
-const mongoURI = require("./config/keys").mongoURI;
-const itemsRouter = require("./routes/api/items")
+// const bodyParser = require("body-parser")
+// const mongoURI = require("./config/keys").mongoURI;
+const config = require("config")
 
 const app = express();
 
+// DB config
+const db = config.get("mongoURI")
 
 const port = process.env.PORT || 5000;
 
 // body-parser middleware
-app.use(bodyParser.json())
+app.use(express.json())
 
 // connect to mongodb
 mongoose
-    .connect(mongoURI, { useUnifiedTopology: true, useNewUrlParser: true })
+    .connect(db, { useUnifiedTopology: true, useNewUrlParser: true,
+    useCreateIndex: true })
     // .then(() => console.log(`MongoDB connected`))
     // .catch((err) => console.log(`error connecting to mongoDB`, err))
 
-const db = mongoose.connection;
+const dbo = mongoose.connection;
 
-db.on("error", (err) => {
+dbo.on("error", (err) => {
     console.log(`error connecting to mongo`, err)
 })
 
-db.once("open", () => {
+dbo.once("open", () => {
     console.log(`successfully established mongodb connection`)
 })
 
 
-// items router
-app.use("/api/items", itemsRouter)
+// use Routes
+app.use("/api/items", require("./routes/api/items"))
+app.use("/api/users", require("./routes/api/users"))
+app.use("/api/auth", require("./routes/api/auth"))
 
 
 // serve static assets if in production

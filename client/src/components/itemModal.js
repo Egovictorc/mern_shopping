@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { connect } from "react-redux"
 import { addItem } from "../actions/itemActions"
-
+import PropTypes from "prop-types"
 
 import { 
  Button, Modal, Form
@@ -37,9 +37,11 @@ function ItemModal(props) {
 
     return (
       <>
-        <Button variant="primary" onClick={handleShow}>
+        {
+          props.isAuthenticated ? <Button variant="primary" onClick={handleShow}>
           Add Item
-        </Button>
+        </Button> : <h4 className="mb-3 ml-4"> Please log in to manage items</h4>
+        }
   
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
@@ -78,6 +80,13 @@ function ItemModal(props) {
     );
   }
   
-const mapStateToProps = state => state.item;
+  ItemModal.propTypes = {
+    isAuthenticated: PropTypes.bool
+  }
+const mapStateToProps = state => ({
+  item: state.item,
+  isAuthenticated: state.auth.isAuthenticated
+});
+
 const mapDispatchToProps = { addItem }
 export default connect(mapStateToProps, mapDispatchToProps)(ItemModal)

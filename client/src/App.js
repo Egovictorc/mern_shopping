@@ -5,12 +5,19 @@ import { Provider } from "react-redux"
 import store from "./store"
 import ItemModal from "./components/itemModal"
 import { Container } from "react-bootstrap"
+import { loadUser  } from "./actions/authActions"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
 
 
+
 function App() {
+
+  React.useEffect(()=> {
+    store.dispatch(loadUser())
+  },[])
+  
   return (
     <Provider store={store}>
       <div className="App">
